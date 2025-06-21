@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { formatError } from "../../lib/formateError";
 import Book from "../book/book.model";
 import Borrow from "./borrow.model";
 
@@ -37,11 +38,7 @@ export const borrowBook = async (req: Request, res: Response) => {
       });
     }
   } catch (error: any) {
-    return res.status(500).json({
-      success: false,
-      message: "Failed to borrow book",
-      error: error.message || "Internal Server Error",
-    });
+    return res.status(500).json(formatError(error));
   }
 };
 
@@ -83,10 +80,6 @@ export const getBorrowedBooksSummary = async (req: Request, res: Response) => {
       data: summary,
     });
   } catch (error: any) {
-    return res.status(500).json({
-      success: false,
-      message: "Failed to retrieve summary",
-      error: error.message,
-    });
+    return res.status(500).json(formatError(error));
   }
 };

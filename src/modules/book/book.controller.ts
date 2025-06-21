@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { formatError } from "../../lib/formateError";
 import Book from "./book.model";
 
 // Create book Post:/api/books
@@ -12,15 +13,8 @@ export const createBook = async (req: Request, res: Response) => {
       data: result,
     };
     res.status(200).json(data);
-
-    console.log(result);
   } catch (error: any) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to create book",
-      error: error.message || "Internal Server Error",
-    });
+    res.status(500).json(formatError(error));
   }
 };
 
@@ -51,11 +45,7 @@ export const getAllBooks = async (req: Request, res: Response) => {
       data: books,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to retrieve books",
-      error: (error as Error).message,
-    });
+    res.status(500).json(formatError(error));
   }
 };
 
@@ -79,11 +69,7 @@ export const getBookById = async (req: Request, res: Response) => {
       data: book,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to retrieve book",
-      error: error.message || "Internal Server Error",
-    });
+    res.status(500).json(formatError(error));
   }
 };
 
@@ -111,11 +97,7 @@ export const updateBook = async (req: Request, res: Response) => {
       data: updatedBook,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to update book",
-      error: (error as Error).message,
-    });
+    res.status(500).json(formatError(error));
   }
 };
 
@@ -139,10 +121,6 @@ export const deleteBook = async (req: Request, res: Response) => {
       data: null,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to delete book",
-      error: (error as Error).message,
-    });
+    res.status(500).json(formatError(error));
   }
 };

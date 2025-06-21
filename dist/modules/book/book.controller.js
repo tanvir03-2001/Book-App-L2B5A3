@@ -46,7 +46,7 @@ const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         const limitNumber = limit ? parseInt(limit, 10) : 0;
         const books = yield book_model_1.default.find(filterObj)
-            .sort(sortOption ? sortOption : "author")
+            .sort(sortOption)
             .limit(limitNumber);
         res.status(200).json({
             success: true,
@@ -65,7 +65,7 @@ const getBookById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { bookId } = req.params;
         const book = yield book_model_1.default.findById(bookId);
         if (!book) {
-            return res.status(404).json({
+            res.status(404).json({
                 success: false,
                 message: "Book not found",
             });
@@ -91,7 +91,7 @@ const updateBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             runValidators: true,
         });
         if (!updatedBook) {
-            return res.status(404).json({
+            res.status(404).json({
                 success: false,
                 message: "Book not found",
             });
@@ -113,7 +113,7 @@ const deleteBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { bookId } = req.params;
         const deletedBook = yield book_model_1.default.findByIdAndDelete(bookId);
         if (!deletedBook) {
-            return res.status(404).json({
+            res.status(404).json({
                 success: false,
                 message: "Book not found",
             });

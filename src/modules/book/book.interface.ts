@@ -7,3 +7,7 @@ interface IBook {
   copies: number;
   available: boolean;
 }
+
+interface BookBorrowMethods {
+  updateCopies(copies: number): void;
+}

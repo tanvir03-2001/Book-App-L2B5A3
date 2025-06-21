@@ -1,6 +1,6 @@
-import { model, Schema } from "mongoose";
+import { Model, model, Schema } from "mongoose";
 
-const BookSchema = new Schema<IBook>(
+const BookSchema = new Schema<IBook, Model<IBook>, BookBorrowMethods>(
   {
     title: {
       type: String,
@@ -37,7 +37,7 @@ const BookSchema = new Schema<IBook>(
     copies: {
       type: Number,
       required: [true, "Copies field is required"],
-      min: [1, "Copies must be at least 1"],
+      min: [0, "Copies must be at positive value"],
     },
     available: {
       type: Boolean,
@@ -50,5 +50,14 @@ const BookSchema = new Schema<IBook>(
   }
 );
 
-const Book = model("book", BookSchema);
+// Methods
+BookSchema.method("updateCopies", function updateCopies(borrowCopies) {
+  this.copies = this.copies - Number(borrowCopies);
+  if (this.copies == 0) {
+    this.available = false;
+  }
+  this.save();
+});
+
+const Book = model("Book", BookSchema);
 export default Book;

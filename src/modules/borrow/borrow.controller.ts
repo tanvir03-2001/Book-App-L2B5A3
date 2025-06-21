@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Book from "../book/book.model";
-import borrow from "./borrow.model";
+import Borrow from "./borrow.model";
 
 export const borrowBook = async (req: Request, res: Response) => {
   try {
@@ -21,7 +21,7 @@ export const borrowBook = async (req: Request, res: Response) => {
     }
 
     // Borrow record
-    const borrowRecord = await borrow.create({
+    const borrowRecord = await Borrow.create({
       book: bookId,
       quantity,
       dueDate,
@@ -41,6 +41,52 @@ export const borrowBook = async (req: Request, res: Response) => {
       success: false,
       message: "Failed to borrow book",
       error: error.message || "Internal Server Error",
+    });
+  }
+};
+
+export const getBorrowedBooksSummary = async (req: Request, res: Response) => {
+  try {
+    const summary = await Borrow.aggregate([
+      {
+        $group: {
+          _id: "$book",
+          totalQuantity: { $sum: "$quantity" },
+        },
+      },
+      {
+        $lookup: {
+          from: "books",
+          localField: "_id",
+          foreignField: "_id",
+          as: "bookDetails",
+        },
+      },
+      {
+        $unwind: "$bookDetails",
+      },
+      {
+        $project: {
+          _id: 0,
+          book: {
+            title: "$bookDetails.title",
+            isbn: "$bookDetails.isbn",
+          },
+          totalQuantity: 1,
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      message: "Borrowed books summary retrieved successfully",
+      data: summary,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve summary",
+      error: error.message,
     });
   }
 };

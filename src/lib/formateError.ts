@@ -1,5 +1,3 @@
-// utils/formatError.ts
-
 export const formatError = (error: any) => {
   const baseResponse: any = {
     message: error.message || "Something went wrong",

@@ -112,6 +112,7 @@ export const deleteBook = async (req: Request, res: Response) => {
       res.status(404).json({
         success: false,
         message: "Book not found",
+        data: null,
       });
     }
 

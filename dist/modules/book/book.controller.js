@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteBook = exports.updateBook = exports.getBookById = exports.getAllBooks = exports.createBook = void 0;
-const formateError_1 = require("../../lib/formateError");
+const formateError_1 = require("../../utils/formateError");
 const book_model_1 = __importDefault(require("./book.model"));
 // Create book Post:/api/books
 const createBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -116,6 +116,7 @@ const deleteBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.status(404).json({
                 success: false,
                 message: "Book not found",
+                data: null,
             });
         }
         res.status(200).json({

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { formatError } from "../../lib/formateError";
+import { formatError } from "../../utils/formateError";
 import Book from "../book/book.model";
 import Borrow from "./borrow.model";
 
@@ -17,6 +17,7 @@ export const borrowBook = async (req: Request, res: Response) => {
       res.status(400).json({
         success: false,
         message: "Not enough copies available",
+        data: null,
       });
       return;
     }

@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getBorrowedBooksSummary = exports.borrowBook = void 0;
-const formateError_1 = require("../../lib/formateError");
+const formateError_1 = require("../../utils/formateError");
 const book_model_1 = __importDefault(require("../book/book.model"));
 const borrow_model_1 = __importDefault(require("./borrow.model"));
 const borrowBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,6 +28,7 @@ const borrowBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.status(400).json({
                 success: false,
                 message: "Not enough copies available",
+                data: null,
             });
             return;
         }

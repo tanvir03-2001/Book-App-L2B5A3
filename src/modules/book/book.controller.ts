@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { formatError } from "../../lib/formateError";
+import { formatError } from "../../utils/formateError";
 import Book from "./book.model";
 
 // Create book Post:/api/books
